@@ -1,0 +1,21 @@
+<nav class="inline-flex items-center">
+  <button
+    [disabled]="currentPage <= 1"
+    (click)="onPageChange(currentPage - 1)"
+    class="px-4 py-2 text-white bg-indigo-600 hover:bg-indigo-700 disabled:bg-gray-300 rounded-md"
+  >
+    Previous
+  </button>
+
+  <span class="mx-4 text-gray-700">
+    Page {{ currentPage }} of {{ totalPages }}
+  </span>
+
+  <button
+    [disabled]="currentPage >= totalPages"
+    (click)="onPageChange(currentPage + 1)"
+    class="px-4 py-2 text-white bg-indigo-600 hover:bg-indigo-700 disabled:bg-gray-300 rounded-md"
+  >
+    Next
+  </button>
+</nav>
