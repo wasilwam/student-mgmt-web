@@ -25,7 +25,7 @@
     <button
       (click)="generateRecords()"
       class="w-full py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition"
-      [disabled]="isLoading || numRecords === 0"
+      [disabled]="isLoading || numRecords < 0"
     >
       <!-- Spinner or Text -->
       <span *ngIf="isLoading" class="material-icons animate-spin">hourglass_empty</span>
