@@ -1,45 +1,60 @@
-<div class="max-w-4xl mx-auto mt-6 p-6 bg-white shadow-lg rounded-lg">
+<div class="max-w-6xl mx-auto mt-6 p-6 bg-white shadow-lg rounded-lg">
   <!-- Error Message -->
   <div *ngIf="hasError" class="p-4 bg-red-100 text-red-700 border border-red-400 rounded-lg">
     <p class="text-center">Error fetching students. Please try again later.</p>
   </div>
 
   <!-- Loading Spinner -->
-  <div *ngIf="isLoading && !hasError" class="flex justify-center mt-6">
-    <div class="spinner-border text-indigo-600" role="status">
-      <span class="sr-only">Loading...</span>
-    </div>
+  <div *ngIf="isLoading && !hasError" class="flex justify-center items-center mt-6 h-64">
+    <div class="animate-spin rounded-full h-12 w-12 border-t-4 border-indigo-600 border-solid"></div>
   </div>
 
   <!-- Student Management Content -->
-  <div>
-    <h2 class="text-2xl font-semibold text-gray-800">Student Management</h2>
+  <div class="mt-6" *ngIf="!isLoading">
+    <h2 class="text-xl font-semibold text-gray-800 mb-4">Student Management</h2>
 
     <!-- Student Table -->
-    <table class="min-w-full mt-6 border-collapse">
-      <thead>
-      <tr>
-        <th class="px-4 py-2 text-left border-b">Student ID</th>
-        <th class="px-4 py-2 text-left border-b">Name</th>
-        <th class="px-4 py-2 text-left border-b">Class</th>
-        <th class="px-4 py-2 text-left border-b">Score</th>
-        <th class="px-4 py-2 text-left border-b">Actions</th>
-      </tr>
-      </thead>
-      <tbody *ngIf="!isLoading">
-      <tr *ngFor="let student of students">
-        <td class="px-4 py-2 border-b">{{ student.studentId }}</td>
-        <td class="px-4 py-2 border-b">{{ student.firstName }} {{ student.lastName }}</td>
-        <td class="px-4 py-2 border-b">{{ student.class }}</td>
-        <td class="px-4 py-2 border-b">{{ student.score }}</td>
-        <td class="px-4 py-2 border-b">
-          <button (click)="viewStudent(student.id)" class="text-indigo-600 hover:text-indigo-800">View</button>
-          <button (click)="editStudent(student.id)" class="text-indigo-600 hover:text-indigo-800 ml-4">Edit</button>
-          <button (click)="deleteStudent(student.id)" class="text-red-600 hover:text-red-800 ml-4">Delete</button>
-        </td>
-      </tr>
-      </tbody>
-    </table>
+    <div class="overflow-x-auto">
+      <table class="w-full border-collapse border border-gray-300 rounded-lg">
+        <thead>
+        <tr class="bg-gray-100 text-left">
+          <th class="px-4 py-2 border-b text-gray-700 font-medium">Student ID</th>
+          <th class="px-4 py-2 border-b text-gray-700 font-medium">Name</th>
+          <th class="px-4 py-2 border-b text-gray-700 font-medium">Class</th>
+          <th class="px-4 py-2 border-b text-gray-700 font-medium">Score</th>
+          <th class="px-4 py-2 border-b text-gray-700 font-medium">Actions</th>
+        </tr>
+        </thead>
+        <tbody *ngIf="!isLoading && !hasError">
+        <tr *ngFor="let student of students" class="hover:bg-gray-50">
+          <td class="px-4 py-2 border-b">{{ student.studentId }}</td>
+          <td class="px-4 py-2 border-b">{{ student.firstName }} {{ student.lastName }}</td>
+          <td class="px-4 py-2 border-b">{{ student.class }}</td>
+          <td class="px-4 py-2 border-b">{{ student.score }}</td>
+          <td class="px-4 py-2 border-b flex space-x-4">
+            <button
+              (click)="viewStudent(student.id)"
+              class="text-indigo-600 hover:text-indigo-800"
+            >
+              View
+            </button>
+            <button
+              (click)="editStudent(student.id)"
+              class="text-indigo-600 hover:text-indigo-800"
+            >
+              Edit
+            </button>
+            <button
+              (click)="deleteStudent(student.id)"
+              class="text-red-600 hover:text-red-800"
+            >
+              Delete
+            </button>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
 
     <!-- Pagination -->
     <div class="mt-6 flex justify-center">
