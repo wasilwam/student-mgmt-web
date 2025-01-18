@@ -3,6 +3,22 @@
     <h2 class="text-3xl font-bold text-center text-indigo-600 mb-8">
       Welcome Back
     </h2>
+
+    <!-- Error Alert -->
+    <div
+      *ngIf="showError"
+      class="flex items-center justify-between bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg mb-6"
+      role="alert"
+    >
+      <div class="flex items-center">
+        <span class="material-icons mr-2">error</span>
+        <p>{{ errorMessage }}</p>
+      </div>
+      <button (click)="closeError()" class="text-red-500 hover:text-red-700">
+        <span class="material-icons">close</span>
+      </button>
+    </div>
+
     <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
       <!-- Username Field -->
       <div class="mb-6">
@@ -63,5 +79,9 @@
         Login
       </button>
     </form>
+    <p class="mt-4 text-center text-gray-500">
+      Don't have an account?
+      <a href="/register" class="text-indigo-600 hover:underline">Sign up</a>
+    </p>
   </div>
 </div>

@@ -13,12 +13,8 @@
 
     <!-- User Profile / Logout Section (Desktop view) -->
     <div class="hidden md:flex items-center space-x-6">
-      <span class="text-gray-600">Hello, User</span>
-      <button class="text-indigo-600 hover:text-indigo-800 transition-colors">
+      <button class="text-indigo-600 hover:text-indigo-800 transition-colors" (click)="logout()">
         Logout
-      </button>
-      <button class="bg-indigo-600 text-white p-2 rounded-lg shadow-md hover:bg-indigo-700 transition-colors">
-        Profile
       </button>
     </div>
   </nav>

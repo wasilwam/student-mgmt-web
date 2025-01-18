@@ -10,6 +10,7 @@ import {ReportComponent} from './pages/report/report.component';
 import {ProcessComponent} from './pages/process/process.component';
 import {ViewStudentComponent} from './pages/manage/view-student/view-student.component';
 import {EditStudentComponent} from './pages/manage/edit-student/edit-student.component';
+import {AuthGuard} from './shared/guards/auth.guard';
 
 export const routes: Routes = [
   {
@@ -23,6 +24,7 @@ export const routes: Routes = [
   {
     path: '',
     component: MainLayoutComponent,
+    canActivate: [AuthGuard],
     children: [
       { path: 'dashboard', component: DashboardComponent },
       { path: 'generate', component: GenerateComponent },
