@@ -61,7 +61,9 @@ export class EditStudentComponent implements OnInit {
           score: data.score,
           status: data.status
         });
-        this.photoPath = data.photoPath;
+        this.photoPath = data.photoPath === 'empty'
+          ? "/assets/225-default-avatar.png"
+          : data.photoPath
         this.isLoading = false;
       },
       error: (err) => {
@@ -129,7 +131,7 @@ export class EditStudentComponent implements OnInit {
 
   // Navigate back to the manage list
   goBack() {
-    this.router.navigate(['/manage']);
+    this.router.navigate([`/manage/view/${this.studentId}`]);
   }
 }
 

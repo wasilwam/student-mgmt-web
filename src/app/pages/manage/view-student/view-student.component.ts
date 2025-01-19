@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import {Student, StudentService} from '../../../services/student.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {DatePipe, NgClass, NgIf, NgOptimizedImage} from '@angular/common';
+import {SafePipe} from '../../../shared/pipe/safe.pipe';
 
 @Component({
   selector: 'app-view-student',
@@ -9,7 +10,8 @@ import {DatePipe, NgClass, NgIf, NgOptimizedImage} from '@angular/common';
     NgIf,
     DatePipe,
     NgClass,
-    NgOptimizedImage
+    NgOptimizedImage,
+    SafePipe
   ],
   templateUrl: './view-student.component.html',
   styleUrl: './view-student.component.css'
@@ -37,13 +39,11 @@ export class ViewStudentComponent {
     this.isLoading = true;
     this.studentService.getStudentById(id).subscribe(
         (response: Student) => {
-          this.student = {
-            ...response,
-            photoPath: response.photoPath && response.photoPath !== 'empty'
-              ? "/255-default-avatar.png"
-              : "/225-default-avatar.png"
-          };
-          delete this.student.photoPath;
+          this.student = response;
+          this.student.photoPath = this.student.photoPath === 'empty'
+              ? "/assets/225-default-avatar.png"
+              : response.photoPath
+          console.log(`photo path to render ${this.student.photoPath}`);
           this.isLoading = false;
         },
       (error) => {

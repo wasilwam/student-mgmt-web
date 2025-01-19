@@ -93,6 +93,7 @@ export class ReportComponent {
       'Class': student.class,
       'Score': student.score,
       'DOB': student.dob,
+      'Status': student.status === 1 ? 'Active' : 'Inactive',
     }));
 
     // Create a worksheet from the filtered records
