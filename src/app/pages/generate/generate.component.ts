@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import {NgIf} from '@angular/common';
 import {FormsModule} from '@angular/forms';
+import {FileService} from '../../services/file.service';
 
 @Component({
   selector: 'app-generate',
@@ -18,6 +19,10 @@ export class GenerateComponent {
   showAlert: boolean = false;
   successMessage: string = '';
   showError: boolean = false;
+  backendErrorMsg: string = '';
+
+  constructor(private fileService: FileService) {
+  }
 
   // Show alert if number of records to be below MAX_NUM_RECORDS
   // Can also use ngModel=numRecords on template
@@ -31,12 +36,20 @@ export class GenerateComponent {
     }
 
     this.isLoading = true;
-    // Simulate backend processing with a delay
-    setTimeout(() => {
-      this.successMessage = `Generated ${this.numRecords} records`;
-      this.showAlert = true;
-      this.isLoading = false;
-    }, 2000); // Simulate 2 seconds delay
+    this.fileService.generateFile(this.numRecords).subscribe({
+      next: result => {
+        this.closeError();
+        this.isLoading = false;
+        this.showAlert = true;
+        this.successMessage = `${result.totalRecords} records. File name: ${result.filename}`;
+      },
+      error: (err: Error) => {
+        this.closeAlert();
+        this.isLoading = false;
+        this.showError = true;
+        this.backendErrorMsg = err.message;
+      }
+    });
   }
 
   closeAlert() {
@@ -45,5 +58,6 @@ export class GenerateComponent {
 
   closeError() {
     this.showError = false;
+    this.backendErrorMsg = "";
   }
 }

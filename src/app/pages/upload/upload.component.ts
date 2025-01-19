@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 import {NgIf} from '@angular/common';
+import {FileService} from '../../services/file.service';
 
 @Component({
   selector: 'app-upload',
@@ -13,9 +14,12 @@ export class UploadComponent {
   isLoading: boolean = false;
   selectedFile: File | null = null;
   showSuccessAlert: boolean = false;
+  successMessage: string = ''
   showErrorAlert: boolean = false;
-  totalRecordsCreated: number = 0;
   errorMessage: string = '';
+
+  constructor(private fileService: FileService) {
+  }
 
   // Handle file selection
   onFileSelected(event: any) {
@@ -36,19 +40,19 @@ export class UploadComponent {
     this.isLoading = true;
     this.showErrorAlert = false; // Clear any previous error alert
 
-    // Simulate the file upload to the backend
-    setTimeout(() => {
-      // Simulating success response from backend
-      const success = Math.random() > 0.2; // Random success/failure for demonstration
-      if (success) {
-        this.totalRecordsCreated = 120; // Example total records created
+    this.fileService.uploadFile(this.selectedFile).subscribe({
+      next: (res) => {
+        this.isLoading = false;
+        this.successMessage = res;
         this.showSuccessAlert = true;
-      } else {
-        this.errorMessage = 'There was an issue with the file upload. Please try again.';
+      },
+      error: (err: Error) => {
+        this.isLoading = false;
+        this.selectedFile = null;
+        this.errorMessage = err.message;
         this.showErrorAlert = true;
       }
-      this.isLoading = false;
-    }, 2000); // Simulating a backend call (2 seconds)
+    });
   }
 
   // Close alert banner

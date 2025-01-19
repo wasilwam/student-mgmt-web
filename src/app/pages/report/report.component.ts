@@ -92,7 +92,7 @@ export class ReportComponent {
       'Lastname': student.lastName,
       'Class': student.class,
       'Score': student.score,
-      'DOB': student.dob
+      'DOB': student.dob,
     }));
 
     // Create a worksheet from the filtered records

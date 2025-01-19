@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import {NgIf} from '@angular/common';
+import {FileService} from '../../services/file.service';
 
 @Component({
   selector: 'app-process',
@@ -15,20 +16,26 @@ export class ProcessComponent {
   inputFileName: string = '';
   outputFileName: string = '';
 
+  constructor(private fileService: FileService) {
+  }
+
   // Process File method
   processFile() {
     this.isLoading = true;
 
-    // Simulate a backend call to process the file
-    setTimeout(() => {
-      // On successful processing, update file names
-      this.inputFileName = 'data.xlsx';
-      this.outputFileName = 'data.csv';
+    this.fileService.convertFile().subscribe({
+      next: data => {
+        this.inputFileName = data.from_excel;
+        this.outputFileName = data.to_csv;
 
-      // Show the success alert
-      this.showAlert = true;
-      this.isLoading = false;
-    }, 2000); // Simulating backend call delay (2 seconds)
+        this.showAlert = true;
+        this.isLoading = false;
+      },
+      error: err => {
+        this.isLoading = false;
+        this.closeAlert();
+      }
+    })
   }
 
   // Close the alert banner
