@@ -1,13 +1,15 @@
 import { Component } from '@angular/core';
 import {Student, StudentService} from '../../../services/student.service';
 import {ActivatedRoute, Router} from '@angular/router';
-import {DatePipe, NgIf} from '@angular/common';
+import {DatePipe, NgClass, NgIf, NgOptimizedImage} from '@angular/common';
 
 @Component({
   selector: 'app-view-student',
   imports: [
     NgIf,
-    DatePipe
+    DatePipe,
+    NgClass,
+    NgOptimizedImage
   ],
   templateUrl: './view-student.component.html',
   styleUrl: './view-student.component.css'

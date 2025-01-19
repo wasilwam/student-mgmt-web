@@ -6,11 +6,15 @@ export interface Student {
   studentId: number;
   firstName: string;
   lastName: string;
-  DOB: string;
-  studentClass: string;
+  dob: string;
+  class: string;
   score: number;
   status: number;
   photoPath: string;
+}
+
+export interface StudentsCount {
+  count: number;
 }
 
 @Injectable({
@@ -18,13 +22,17 @@ export interface Student {
 })
 export class StudentService {
 
-  private apiUrl = 'https://your-api-url.com/students';
+  private apiUrl = 'http://localhost:8080/students';
 
   constructor(private http: HttpClient) {}
 
   // Get students with pagination
-  getStudents(page: number, pageSize: number): Observable<Student> {
-    return this.http.get<Student>(`${this.apiUrl}?page=${page}&size=${pageSize}`);
+  getStudents(page: number, pageSize: number): Observable<Student[]> {
+    return this.http.get<Student[]>(`${this.apiUrl}?page=${page}&size=${pageSize}`);
+  }
+
+  getStudentsCount(): Observable<StudentsCount> {
+    return this.http.get<StudentsCount>(`${this.apiUrl}/count`);
   }
 
   updateStudent(id: number, formData: FormData): Observable<Student> {

@@ -81,7 +81,10 @@
           Student ID
         </th>
         <th class="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
-          Name
+          First Name
+        </th>
+        <th class="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
+          Last Name
         </th>
         <th class="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
           Class
@@ -97,13 +100,16 @@
           {{ student.studentId }}
         </td>
         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-          {{ student.firstName }} {{ student.lastName }}
+          {{ student.firstName }}
         </td>
         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-          {{ student.studentClass }}
+          {{ student.lastName }}
         </td>
         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-          {{ student.DOB | date: 'mediumDate' }}
+          {{ student.class }}
+        </td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+          {{ student.dob | date: 'mediumDate' }}
         </td>
       </tr>
       </tbody>

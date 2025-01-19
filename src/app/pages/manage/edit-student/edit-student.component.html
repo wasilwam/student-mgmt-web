@@ -26,7 +26,9 @@
   <!-- Edit Form -->
   <form [formGroup]="editForm" (ngSubmit)="onSubmit()" *ngIf="!isLoading">
     <h2 class="text-2xl font-semibold text-gray-800 mb-6">Edit Student Details</h2>
-
+<!--    <div class="hidden">-->
+<!--      <input type="hidden"  formControlName="studentId" />-->
+<!--    </div>-->
     <div class="grid grid-cols-2 gap-4 mb-4">
       <div>
         <label for="firstName" class="text-gray-600">First Name</label>
@@ -50,22 +52,26 @@
 
     <div class="grid grid-cols-2 gap-4 mb-4">
       <div>
-        <label for="DOB" class="text-gray-600">Date of Birth</label>
+        <label for="dob" class="text-gray-600">Date of Birth</label>
         <input
-          id="DOB"
-          formControlName="DOB"
+          id="dob"
+          formControlName="dob"
           type="date"
           class="w-full p-3 border rounded-lg"
         />
       </div>
       <div>
         <label for="class" class="text-gray-600">Class</label>
-        <input
+        <select
           id="class"
           formControlName="class"
-          class="w-full p-3 border rounded-lg"
-          placeholder="Class"
-        />
+          class="w-full p-3 pr-10 border rounded-lg bg-white text-gray-700"
+        >
+          <option value="" disabled selected>Select a class</option>
+          <option *ngFor="let classOption of classOptions" [value]="classOption">
+            {{ classOption }}
+          </option>
+        </select>
       </div>
     </div>
 

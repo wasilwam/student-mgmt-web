@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
-import {PaginationComponent} from '../../components/pagination/pagination.component';
-import {FormsModule} from '@angular/forms';
-import {DatePipe, NgForOf, NgIf} from '@angular/common';
-import {Student, StudentService} from '../../services/student.service';
+import { PaginationComponent } from '../../components/pagination/pagination.component';
+import { FormsModule } from '@angular/forms';
+import { DatePipe, NgForOf, NgIf } from '@angular/common';
+import { Student, StudentService } from '../../services/student.service';
+import * as XLSX from 'xlsx';  // Import the xlsx library
 
 @Component({
   selector: 'app-report',
@@ -14,7 +15,7 @@ import {Student, StudentService} from '../../services/student.service';
     DatePipe
   ],
   templateUrl: './report.component.html',
-  styleUrl: './report.component.css'
+  styleUrls: ['./report.component.css']
 })
 export class ReportComponent {
   students: Student[] = [];
@@ -57,7 +58,7 @@ export class ReportComponent {
 
     if (this.filters.studentClass) {
       filtered = filtered.filter(
-        (student) => student.studentClass === this.filters.studentClass
+        (student) => student.class === this.filters.studentClass
       );
     }
 
@@ -65,7 +66,7 @@ export class ReportComponent {
       const startDate = new Date(this.filters.startDate);
       const endDate = new Date(this.filters.endDate);
       filtered = filtered.filter((student) => {
-        const dob = new Date(student.DOB);
+        const dob = new Date(student.dob);
         return dob >= startDate && dob <= endDate;
       });
     }
@@ -85,13 +86,23 @@ export class ReportComponent {
   }
 
   exportFilteredRecords(): void {
-    const filteredRecords = JSON.stringify(this.paginatedStudents, null, 2);
-    const blob = new Blob([filteredRecords], { type: 'application/json' });
-    const url = window.URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'filtered_students.json';
-    a.click();
-    window.URL.revokeObjectURL(url);
+    const filteredRecords = this.paginatedStudents.map(student => ({
+      'Student ID': student.studentId,
+      'Firstname': student.firstName,
+      'Lastname': student.lastName,
+      'Class': student.class,
+      'Score': student.score,
+      'DOB': student.dob
+    }));
+
+    // Create a worksheet from the filtered records
+    const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(filteredRecords);
+
+    // Create a workbook from the worksheet
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Filtered Students');
+
+    // Generate Excel file and trigger download
+    XLSX.writeFile(wb, 'filtered_students.xlsx');
   }
 }

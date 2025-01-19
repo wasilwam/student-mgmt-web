@@ -3,11 +3,11 @@ import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/
 import { ActivatedRoute, Router } from '@angular/router';
 import { StudentService } from '../../../services/student.service';
 import {SafePipe} from '../../../shared/pipe/safe.pipe';
-import {NgClass, NgIf, NgOptimizedImage} from '@angular/common';
+import {NgClass, NgForOf, NgIf, NgOptimizedImage} from '@angular/common';
 
 @Component({
   selector: 'app-edit-student',
-  imports: [SafePipe, NgOptimizedImage, NgClass, NgIf, ReactiveFormsModule],
+  imports: [SafePipe, NgOptimizedImage, NgClass, NgIf, ReactiveFormsModule, NgForOf],
   templateUrl: './edit-student.component.html',
   styleUrls: ['./edit-student.component.css']
 })
@@ -19,6 +19,7 @@ export class EditStudentComponent implements OnInit {
   alertType = 'success';
   photoPath: string = '';
   studentId!: number;
+  classOptions: string[] = ['Class1', 'Class2', 'Class3', 'Class4', 'Class5'];
 
   constructor(
     private fb: FormBuilder,
@@ -35,9 +36,10 @@ export class EditStudentComponent implements OnInit {
   // Initialize form controls
   private initForm() {
     this.editForm = this.fb.group({
+      studentId: [this.studentId, [Validators.required]],
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
-      DOB: ['', Validators.required],
+      dob: ['', Validators.required],
       class: ['', Validators.required],
       score: [null, [Validators.required, Validators.min(0), Validators.max(100)]],
       status: ['', Validators.required]
@@ -51,10 +53,11 @@ export class EditStudentComponent implements OnInit {
     this.studentService.getStudentById(this.studentId).subscribe({
       next: (data) => {
         this.editForm.patchValue({
+          studentId: this.studentId,
           firstName: data.firstName,
           lastName: data.lastName,
-          DOB: data.DOB,
-          class: data.studentClass,
+          DOB: data.dob,
+          class: data.class,
           score: data.score,
           status: data.status
         });

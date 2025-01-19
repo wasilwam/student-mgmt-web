@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import {Component, Input} from '@angular/core';
+import {StudentService} from '../../services/student.service';
 
 @Component({
   selector: 'app-dashboard-tile',
@@ -7,6 +8,5 @@ import { Component } from '@angular/core';
   styleUrl: './dashboard-tile.component.css'
 })
 export class DashboardTileComponent {
-  totalStudents: number = 500; // This value can be dynamically fetched from the backend
-  lastRefreshed: number = 10;
+  @Input() totalNumStudents: number = 0;
 }

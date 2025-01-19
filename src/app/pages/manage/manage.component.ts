@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {StudentService} from '../../services/student.service';
+import {Student, StudentService} from '../../services/student.service';
 import {Router} from '@angular/router';
 import {PaginationComponent} from '../../components/pagination/pagination.component';
 import {NgForOf, NgIf} from '@angular/common';
@@ -15,7 +15,7 @@ import {NgForOf, NgIf} from '@angular/common';
   styleUrl: './manage.component.css'
 })
 export class ManageComponent {
-  students: any[] = [];
+  students: Student[] = [];
   totalStudents: number = 0;
   pageSize: number = 10;
   currentPage: number = 1;
@@ -32,9 +32,9 @@ export class ManageComponent {
     this.isLoading = true;
     this.hasError = false; // Reset error state before loading
     this.studentService.getStudents(page, this.pageSize).subscribe(
-      (response: any) => {
-        this.students = response.data;
-        this.totalStudents = response.total;
+      (response: Student[]) => {
+        this.students = response;
+        this.totalStudents = response.length;
         this.isLoading = false;
       },
       (error: Error) => {
@@ -45,11 +45,11 @@ export class ManageComponent {
     );
   }
 
-  viewStudent(id: string): void {
+  viewStudent(id: number): void {
     this.router.navigate([`/manage/view/${id}`]);
   }
 
-  editStudent(id: string): void {
+  editStudent(id: number): void {
     this.router.navigate([`/manage/edit/${id}`]);
   }
 
