@@ -56,7 +56,7 @@ export class EditStudentComponent implements OnInit {
           studentId: this.studentId,
           firstName: data.firstName,
           lastName: data.lastName,
-          DOB: data.dob,
+          dob: data.dob,
           class: data.class,
           score: data.score,
           status: data.status

@@ -36,10 +36,16 @@ export class ViewStudentComponent {
   fetchStudentDetails(id: number): void {
     this.isLoading = true;
     this.studentService.getStudentById(id).subscribe(
-      (response: Student) => {
-        this.student = response;
-        this.isLoading = false;
-      },
+        (response: Student) => {
+          this.student = {
+            ...response,
+            photoPath: response.photoPath && response.photoPath !== 'empty'
+              ? "/255-default-avatar.png"
+              : "/225-default-avatar.png"
+          };
+          delete this.student.photoPath;
+          this.isLoading = false;
+        },
       (error) => {
         this.errorMessage = 'Failed to fetch student details. Please try again.';
         console.error('Error fetching student details:', error);

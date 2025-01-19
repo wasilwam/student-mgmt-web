@@ -20,7 +20,7 @@
           {{ student.firstName }} {{ student.lastName }}
         </h2>
         <p class="text-gray-600 mt-2">ID: {{ student.studentId }}</p>
-        <p class="text-gray-600 mt-1">Class: {{ student.studentClass }}</p>
+        <p class="text-gray-600 mt-1">Class: {{ student.class }}</p>
         <p [ngClass]="{'text-green-600': student.status === 1, 'text-gray-600': student.status !== 1}" class="mt-1">
           Status: {{ student.status === 1 ? 'Active' : 'Inactive' }}
         </p>
@@ -29,7 +29,7 @@
       <!-- Student Photo -->
       <div class="absolute top-0 right-0 w-48">
         <img
-          [src]="student.photoPath || '/assets/default-photo.png'"
+          [src]="student.photoPath"
           alt="Student Photo"
           class="w-48 h-48 object-cover rounded-lg border-2 border-gray-300"
         />
