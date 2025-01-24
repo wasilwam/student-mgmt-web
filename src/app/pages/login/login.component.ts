@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NgIf } from '@angular/common';
-import {LoginService} from '../../services/login.service';
-import {Router} from '@angular/router';
-import {log} from '@angular-devkit/build-angular/src/builders/ssr-dev-server';
+import { LoginService } from '../../services/login.service';
+import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-login',
@@ -42,15 +42,14 @@ export class LoginComponent {
   }
 
   onSubmit() {
-    if(this.loginForm.valid) {
+    if (this.loginForm.valid) {
       this.loginService.generateToken(this.loginForm.value).subscribe({
-        next : (response) => {
+        next: (response) => {
           this.username = response.username;
-          this.bearerToken = response.bearerToken;
-          this.loginService.login(this.bearerToken);
+          this.loginService.login(response);
           this.router.navigate(['/dashboard']).then(r => console.log(`login successful for ${this.username}`));
         },
-        error : (error: Error) => {
+        error: (error: Error) => {
           console.log(`Login Failed: ${error.message}`);
           this.showError = true;
           this.errorMessage = 'Invalid username or password. Please try again.';

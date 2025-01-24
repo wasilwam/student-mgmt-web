@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 export interface Student {
@@ -11,6 +11,7 @@ export interface Student {
   score: number;
   status: number;
   photoPath: string;
+  approvalStep: string;
   approvalStatus: string;
   rejectionComment: string;
 }
@@ -85,5 +86,13 @@ export class StudentService {
 
   getAllStudents(): Observable<Student[]> {
     return this.http.get<Student[]>(`${this.apiUrl}/all`);
+  }
+
+  studentChecker(studentId: number, action: string, comment: string): Observable<Student> {
+    const params = new HttpParams()
+      .set('action', action)
+      .set('comment', comment);
+
+    return this.http.post<Student>(`${this.apiUrl}/${studentId}/approval`, null, { params });
   }
 }

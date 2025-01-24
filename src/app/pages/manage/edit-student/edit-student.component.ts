@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { StudentService } from '../../../services/student.service';
-import {SafePipe} from '../../../shared/pipe/safe.pipe';
-import {NgClass, NgForOf, NgIf, NgOptimizedImage} from '@angular/common';
+import { Student, StudentService } from '../../../services/student.service';
+import { SafePipe } from '../../../shared/pipe/safe.pipe';
+import { NgClass, NgForOf, NgIf, NgOptimizedImage } from '@angular/common';
 
 @Component({
   selector: 'app-edit-student',
@@ -19,14 +19,16 @@ export class EditStudentComponent implements OnInit {
   alertType = 'success';
   photoPath: string = '';
   studentId!: number;
+  oldStudent: Student | undefined;
   classOptions: string[] = ['Class1', 'Class2', 'Class3', 'Class4', 'Class5'];
+  canMakeUser: boolean = localStorage.getItem('role') === 'ROLE_STUDENT_MAKER' || localStorage.getItem('role') === 'ROLE_ADMIN';
 
   constructor(
     private fb: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
     private studentService: StudentService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.initForm();
@@ -52,6 +54,7 @@ export class EditStudentComponent implements OnInit {
     this.studentId = +this.route.snapshot.paramMap.get('id')!;
     this.studentService.getStudentById(this.studentId).subscribe({
       next: (data) => {
+        this.oldStudent = data;
         this.editForm.patchValue({
           studentId: this.studentId,
           firstName: data.firstName,
@@ -63,7 +66,7 @@ export class EditStudentComponent implements OnInit {
         });
         this.photoPath = data.photoPath === 'empty'
           ? "/assets/225-default-avatar.png"
-          : data.photoPath
+          : data.photoPath;
         this.isLoading = false;
       },
       error: (err) => {
@@ -80,7 +83,13 @@ export class EditStudentComponent implements OnInit {
     if (this.editForm.invalid) return;
 
     this.isLoading = true;
-    const updatedData = { ...this.editForm.value, photoPath: this.photoPath };
+    const updatedData = {
+      ...this.editForm.value,
+      photoPath: this.photoPath,
+      rejectionComment: this.oldStudent?.rejectionComment,
+      approvalStatus: this.oldStudent?.approvalStatus,
+      approvalStep: this.oldStudent?.approvalStep
+    };
 
     this.studentService.updateStudent(this.studentId, updatedData).subscribe({
       next: () => {

@@ -45,6 +45,7 @@
 
             <!-- Edit Button -->
             <button
+              *ngIf="canMakeUser"
               (click)="editStudent(student.studentId)"
               class="flex items-center text-indigo-600 hover:text-indigo-800 opacity-80"
             >

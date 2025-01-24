@@ -22,12 +22,13 @@ export class ManageComponent {
   currentPage: number = 1;
   isLoading: boolean = false;
   hasError: boolean = false;
+  canMakeUser: boolean | undefined = localStorage.getItem('roles')?.includes('ROLE_STUDENT_MAKER') || localStorage.getItem('roles')?.includes('ROLE_ADMIN');
 
   constructor(private studentService: StudentService, private router: Router) { }
 
   ngOnInit(): void {
     this.loadStudents();
-  }
+  };
 
   loadStudents(page: number = 1): void {
     this.isLoading = true;
@@ -46,15 +47,15 @@ export class ManageComponent {
         this.hasError = true; // Set error state on failure
       }
     );
-  }
+  };
 
   viewStudent(id: number): void {
     this.router.navigate([`/manage/view/${id}`]);
-  }
+  };
 
   editStudent(id: number): void {
     this.router.navigate([`/manage/edit/${id}`]);
-  }
+  };
 
   deleteStudent(id: number): void {
     if (confirm('Are you sure you want to delete this student?')) {
