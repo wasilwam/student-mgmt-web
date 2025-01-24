@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import {HttpClient} from '@angular/common/http';
-import {Observable} from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 export interface Student {
   studentId: number;
@@ -11,6 +11,37 @@ export interface Student {
   score: number;
   status: number;
   photoPath: string;
+  approvalStatus: string;
+  rejectionComment: string;
+}
+
+export interface Pageable {
+  pageNumber: number;
+  pageSize: number;
+  sort: Sort;
+  offset: number;
+  paged: boolean;
+  unpaged: boolean;
+}
+
+export interface Sort {
+  sorted: boolean;
+  unsorted: boolean;
+  empty: boolean;
+}
+
+export interface StudentsResponse {
+  content: Student[];
+  pageable: Pageable;
+  totalElements: number;
+  totalPages: number;
+  last: boolean;
+  first: boolean;
+  size: number;
+  number: number;
+  sort: Sort;
+  numberOfElements: number;
+  empty: boolean;
 }
 
 export interface StudentsCount {
@@ -24,11 +55,11 @@ export class StudentService {
 
   private apiUrl = 'http://localhost:8080/students';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   // Get students with pagination
-  getStudents(page: number, pageSize: number): Observable<Student[]> {
-    return this.http.get<Student[]>(`${this.apiUrl}?page=${page}&size=${pageSize}`);
+  getStudents(page: number, pageSize: number): Observable<StudentsResponse> {
+    return this.http.get<StudentsResponse>(`${this.apiUrl}?page=${page}&size=${pageSize}`);
   }
 
   getStudentsCount(): Observable<StudentsCount> {
@@ -53,6 +84,6 @@ export class StudentService {
   }
 
   getAllStudents(): Observable<Student[]> {
-    return this.http.get<Student[]>(`${this.apiUrl}`);
+    return this.http.get<Student[]>(`${this.apiUrl}/all`);
   }
 }

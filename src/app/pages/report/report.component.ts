@@ -5,6 +5,14 @@ import { DatePipe, NgForOf, NgIf } from '@angular/common';
 import { Student, StudentService } from '../../services/student.service';
 import * as XLSX from 'xlsx';  // Import the xlsx library
 
+interface Filters {
+  studentId: string;
+  studentClass: string;
+  startDate: string;
+  endDate: string;
+  approvalStatus: 'Pending' | 'Rejected';
+}
+
 @Component({
   selector: 'app-report',
   imports: [
@@ -20,24 +28,25 @@ import * as XLSX from 'xlsx';  // Import the xlsx library
 export class ReportComponent {
   students: Student[] = [];
   paginatedStudents: Student[] = [];
-  classes: string[] = ['Class 1', 'Class 2', 'Class 3', 'Class 4', 'Class 5'];
+  classes: string[] = ['Class1', 'Class2', 'Class3', 'Class4', 'Class5'];
+  approvalStatuses: string[] = ['Pending', 'Rejected'];
   filters = {
     studentId: '',
     studentClass: '',
     startDate: '',
     endDate: '',
+    approvalStatus: '',
   };
   currentPage: number = 1;
   pageSize: number = 10;
 
-  constructor(private studentService: StudentService) {}
+  constructor(private studentService: StudentService) { }
 
   ngOnInit(): void {
     this.fetchStudents();
   }
 
   fetchStudents(): void {
-    // TODO: edit to fetch filtered student instead of client side filtering
     this.studentService.getAllStudents().subscribe((response: Student[]) => {
       this.students = response;
       this.applyFilters();
@@ -51,9 +60,7 @@ export class ReportComponent {
       filtered = filtered.filter((student) =>
         student.studentId
           .toString()
-          .toLowerCase()
-          .includes(this.filters.studentId.toLowerCase())
-      );
+          .toLowerCase() === this.filters.studentId.toLowerCase());
     }
 
     if (this.filters.studentClass) {
@@ -69,6 +76,10 @@ export class ReportComponent {
         const dob = new Date(student.dob);
         return dob >= startDate && dob <= endDate;
       });
+    }
+
+    if (this.filters.approvalStatus) {
+      filtered = filtered.filter(student => student.approvalStatus === this.filters.approvalStatus);
     }
 
     this.updatePagination(filtered);

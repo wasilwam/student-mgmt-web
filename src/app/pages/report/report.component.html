@@ -6,7 +6,7 @@
   </div>
 
   <!-- Filter Section -->
-  <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+  <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
     <!-- Search by Student ID -->
     <div>
       <label for="studentId" class="block text-sm font-medium text-gray-700">
@@ -59,6 +59,24 @@
           class="block w-full p-3 rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
         />
       </div>
+    </div>
+    
+    <!-- filter by Pending Approval -->
+    <div>
+      <label for="approvalStatus" class="block text-sm font-medium text-gray-700">
+        Filter by Approval Status
+      </label>
+      <select
+        id="approvalStatus"
+        [(ngModel)]="filters.approvalStatus"
+        (change)="applyFilters()"
+        class="mt-2 block w-full p-3 rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+      >
+        <option value="">All Statuses</option>
+        <option *ngFor="let approvalStatus of approvalStatuses" [value]="approvalStatus">
+          {{ approvalStatus }}
+        </option> 
+      </select>
     </div>
   </div>
 

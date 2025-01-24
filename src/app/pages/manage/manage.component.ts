@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
-import {Student, StudentService} from '../../services/student.service';
-import {Router} from '@angular/router';
-import {PaginationComponent} from '../../components/pagination/pagination.component';
-import {NgForOf, NgIf} from '@angular/common';
+import { Student, StudentService, StudentsResponse } from '../../services/student.service';
+import { Router } from '@angular/router';
+import { PaginationComponent } from '../../components/pagination/pagination.component';
+import { NgForOf, NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-manage',
@@ -15,14 +15,15 @@ import {NgForOf, NgIf} from '@angular/common';
   styleUrl: './manage.component.css'
 })
 export class ManageComponent {
+  studentsResponse: StudentsResponse | undefined;
   students: Student[] = [];
   totalStudents: number = 0;
-  pageSize: number = 10;
+  pageSize: number = 100;
   currentPage: number = 1;
   isLoading: boolean = false;
   hasError: boolean = false;
 
-  constructor(private studentService: StudentService, private router: Router) {}
+  constructor(private studentService: StudentService, private router: Router) { }
 
   ngOnInit(): void {
     this.loadStudents();
@@ -32,9 +33,11 @@ export class ManageComponent {
     this.isLoading = true;
     this.hasError = false; // Reset error state before loading
     this.studentService.getStudents(page, this.pageSize).subscribe(
-      (response: Student[]) => {
-        this.students = response;
-        this.totalStudents = response.length;
+      (response) => {
+        this.students = response.content;
+        this.totalStudents = response.totalElements;
+        this.pageSize = response.pageable.pageSize;
+        this.currentPage = response.pageable.pageNumber;
         this.isLoading = false;
       },
       (error: Error) => {
