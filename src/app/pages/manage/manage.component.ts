@@ -3,13 +3,17 @@ import { Student, StudentService, StudentsResponse } from '../../services/studen
 import { Router } from '@angular/router';
 import { PaginationComponent } from '../../components/pagination/pagination.component';
 import { NgForOf, NgIf } from '@angular/common';
+import { AverageScoreComponent } from "../../components/average-score/average-score.component";
+import { SelectedStudentsComponent } from "../../components/selected-students/selected-students.component";
 
 @Component({
   selector: 'app-manage',
   imports: [
     PaginationComponent,
     NgIf,
-    NgForOf
+    NgForOf,
+    AverageScoreComponent,
+    SelectedStudentsComponent
   ],
   templateUrl: './manage.component.html',
   styleUrl: './manage.component.css'
@@ -23,6 +27,9 @@ export class ManageComponent {
   isLoading: boolean = false;
   hasError: boolean = false;
   canMakeUser: boolean | undefined = localStorage.getItem('roles')?.includes('ROLE_STUDENT_MAKER') || localStorage.getItem('roles')?.includes('ROLE_ADMIN');
+  selectedStudents: Partial<Student>[] = [];
+  totalScore: number = 0;
+  students_average: string = '0';
 
   constructor(private studentService: StudentService, private router: Router) { }
 
@@ -75,5 +82,26 @@ export class ManageComponent {
   onPageChange(page: number): void {
     this.currentPage = page;
     this.loadStudents(page);
+  }
+
+  onSelectStudent(event: any, studentId: number, firstName: string, lastName: string, score: number): void {
+    if (event.target.checked) {
+      this.selectedStudents.push({ studentId, firstName, lastName, score });
+      console.log(this.selectedStudents);
+    } else {
+      this.selectedStudents = this.selectedStudents.filter(s => s.studentId !== studentId);
+      console.log(this.selectedStudents);
+    }
+    this.calculateTotalScore();
+    this.calculateAverage();
+  }
+
+  calculateTotalScore(): void {
+    this.totalScore = 0;
+    this.selectedStudents.map(s => this.totalScore += (Number(s.score) > 0 ? Number(s.score) : 0));
+  }
+
+  calculateAverage(): void {
+    this.students_average = (this.totalScore / this.selectedStudents.length).toFixed(2);
   }
 }

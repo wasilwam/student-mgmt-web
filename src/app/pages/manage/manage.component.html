@@ -14,6 +14,16 @@
     <h2 class="text-xl font-semibold text-gray-800 mb-4">Student Management</h2>
     <p class="text-gray-600 mb-6">Paginated student records to view, update and delete</p>
 
+    <!-- Average table -->
+    <div class="overflow-x-auto shadow-md">
+      <app-average-score [average_score]="students_average" />
+    </div>
+
+    <!-- Selected students -->
+    <div>
+      <app-selected-students [selectedStudents]="selectedStudents" [studentTotalScore]="totalScore"></app-selected-students>
+    </div>
+
     <!-- Student Table -->
     <div class="overflow-x-auto shadow-md">
       <table class="min-w-full divide-y divide-gray-200 shadow-md rounded-lg overflow-hidden">
@@ -59,6 +69,8 @@
             >
               <span class="material-icons mr-1">delete</span>
             </button>
+            <input type="checkbox" [value]="student.studentId" 
+              (change)="onSelectStudent($event, student.studentId, student.firstName, student.lastName, student.score)" />
           </td>
         </tr>
         </tbody>

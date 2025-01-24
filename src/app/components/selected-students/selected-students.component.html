@@ -1,0 +1,33 @@
+<div class="bg-white shadow-lg rounded-lg py-6 mb-5" *ngIf="selectedStudents.length > 0">
+    <!-- Title -->
+    <h2 class="text-xl font-medium text-gray-700 text-center mb-4">Selected Students</h2>
+  
+    <!-- Table Container -->
+    <div class="overflow-x-auto px-6">
+      <!-- Table -->
+      <table class="min-w-full bg-white rounded-lg overflow-hidden">
+        <!-- Table Header -->
+        <thead class="bg-gray-100">
+          <tr>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Id</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Score</th>
+          </tr>
+        </thead>
+  
+        <!-- Table Body -->
+        <tbody class="divide-y divide-gray-200">
+          <tr *ngFor="let student of selectedStudents; let i = index" [ngClass]="{'bg-gray-50': i % 2 === 0}">
+            <td class="px-6 py-4 text-sm text-gray-900">{{ student.studentId }}</td>
+            <td class="px-6 py-4 text-sm text-gray-900">{{ student.firstName }} {{ student.lastName }}</td>
+            <td class="px-6 py-4 text-sm text-gray-900">{{ student.score }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  
+    <!-- Total Score -->
+    <div class="mt-6 text-center">
+      <h2 class="text-xl font-medium text-gray-700">Total Score: {{ studentTotalScore }}</h2>
+    </div>
+  </div>
