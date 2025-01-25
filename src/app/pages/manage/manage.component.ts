@@ -23,7 +23,7 @@ export class ManageComponent {
   students: Student[] = [];
   totalStudents: number = 0;
   pageSize: number = 100;
-  currentPage: number = 1;
+  currentPage: number = 0;
   isLoading: boolean = false;
   hasError: boolean = false;
   canMakeUser: boolean | undefined = localStorage.getItem('roles')?.includes('ROLE_STUDENT_MAKER') || localStorage.getItem('roles')?.includes('ROLE_ADMIN');
@@ -37,7 +37,7 @@ export class ManageComponent {
     this.loadStudents();
   };
 
-  loadStudents(page: number = 1): void {
+  loadStudents(page: number = 0): void {
     this.isLoading = true;
     this.hasError = false; // Reset error state before loading
     this.studentService.getStudents(page, this.pageSize).subscribe(
