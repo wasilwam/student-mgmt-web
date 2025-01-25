@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
-import {NgIf} from '@angular/common';
-import {FormsModule} from '@angular/forms';
-import {FileService} from '../../services/file.service';
+import { NgIf } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { FileService } from '../../services/file.service';
 
 @Component({
   selector: 'app-generate',
@@ -14,7 +14,7 @@ import {FileService} from '../../services/file.service';
 })
 export class GenerateComponent {
   numRecords: number = 0;
-  readonly MAX_NUM_RECORDS = 10000000;
+  readonly MAX_NUM_RECORDS = 1000000;
   isLoading: boolean = false;
   showAlert: boolean = false;
   successMessage: string = '';
